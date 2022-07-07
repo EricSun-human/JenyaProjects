@@ -1,39 +1,34 @@
-import cv2
-import math
+import ffmpeg
+#import cv2
+#import subprocess as sp
 import os
-videoFile = cv2.VideoCapture("C:\\Users\\Eric Sun\\Desktop\\RickRoll.mp4")
+os.system("ffmpeg -i rickroll.mp4 -ss 00:00:02 -t 00:00:02 -async 1 -strict -2 cutRickRoll.mp4")
+os.system("cd cutRickroll")
+os.system("ffmpeg -i cutRickRoll.mp4 -r 24/1 out%03d.jpg")
+# video = cv2.VideoCapture("C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4")
 
-fps=videoFile.get(cv2.CAP_PROP_FPS)
-#print(fps)
+#audio = input.audio.filter("aecho", 0.8, 0.9, 1000, 0.3)
+#video = input.video.hflip()
+#out = ffmpeg.output(audio, video, 'out.mp4')
 
-vidLen = int(videoFile.get(cv2.CAP_PROP_FRAME_COUNT))
-#print(vidLen)
+#probe = ffmpeg.probe("C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4")
+#FFMPEG_BIN = "ffmpeg.exe" # on Windows
+#command = [ FFMPEG_BIN,'-i', 'RickRoll.mp4','-f', 'image2pipe','-pix_fmt', 'rgb24','-vcodec', 'rawvideo', '-']
+#pipe = sp.Popen(command, stdout = sp.PIPE, bufsize=10**8)
 
-lastFrameToInclude=math.ceil(fps*4)
-#print(minVideoLen)
+#video_info = next(s for s in probe['streams'] if s['codec_type'] == 'video')
+#fps = int(video_info['r_frame_rate'].split('/')[0])
 
-try:
-    if not os.path.exists("C:\\Users\\Eric Sun\\Desktop\\rangeOfVideoImgs"):
-        os.makedirs("C:\\Users\\Eric Sun\\Desktop\\rangeOfVideoImgs")
-except OSError:
-    print("Error creating folder to contain the frames")
+#stream = ffmpeg.input('C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4')
+#stream = ffmpeg.hflip(stream)
+#stream = ffmpeg.output(stream, 'C:\\Users\\erics\\OneDrive\\Desktop\\output.mp4')
+#ffmpeg.run(stream)
 
-if vidLen<lastFrameToInclude:
-    print("Video is to short to get frames from 2-4 seconds")
-else:
-    print("Starting to write frames...")
-    frameNum=1
-    #Gets the first and last frame starting at 2 and 6 seconds into the video
-    firstFrameToInclude=math.ceil(fps*2)
-
-    while(videoFile.isOpened()):
-        ret, frame = videoFile.read()
-
-        if ret==False:
-            break
-
-        if frameNum>=firstFrameToInclude and frameNum<=lastFrameToInclude:
-            print("Writing Frame Num: "+str(frameNum))
-            cv2.imwrite("C:\\Users\\Eric Sun\\Desktop\\rangeOfVideoImgs\\frame"+str(frameNum)+".jpg",frame)
-        frameNum+=1
-    #cv2.imwrite("C:\\Users\\Eric Sun\\Desktop\\"+str(frameNum)+".jpg",frame)
+#probe = ffmpeg.probe('C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4')
+#video_info = next(s for s in probe['streams'] if s['codec_type'] == 'video')
+#fps = int(video_info['r_frame_rate'].split('/')[0])
+#print("fps: "+str(fps))
+#input = ffmpeg.input('RickRoll.mp4')
+#audio = input.audio.filter("aecho", 0.8, 0.9, 1000, 0.3)
+#video = input.video.hflip()
+#out = ffmpeg.output(audio, video, 'out.mp4')
