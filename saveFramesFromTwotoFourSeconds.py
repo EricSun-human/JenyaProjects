@@ -1,34 +1,27 @@
-import ffmpeg
-#import cv2
-#import subprocess as sp
-import os
-os.system("ffmpeg -i rickroll.mp4 -ss 00:00:02 -t 00:00:02 -async 1 -strict -2 cutRickRoll.mp4")
-os.system("cd cutRickroll")
-os.system("ffmpeg -i cutRickRoll.mp4 -r 24/1 out%03d.jpg")
-# video = cv2.VideoCapture("C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4")
+#"C:\Users\erics\OneDrive\Desktop\videoFrames"
+import cv2
+import numpy as np
+import glob
+from array import array
 
-#audio = input.audio.filter("aecho", 0.8, 0.9, 1000, 0.3)
-#video = input.video.hflip()
-#out = ffmpeg.output(audio, video, 'out.mp4')
+img_array = []
+numImg=0
+for filename in glob.glob("C:\\Users\\erics\\OneDrive\\Desktop\Animation_1080P-01b3\\Animation_1080P-01b3\*.png"):
+    img = cv2.imread(filename)
+    height, width, layers = img.shape
+    size = (width,height)
+    img_array.append(img)
+    numImg+=1
+print("Number of Images:"+str(numImg))
 
-#probe = ffmpeg.probe("C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4")
-#FFMPEG_BIN = "ffmpeg.exe" # on Windows
-#command = [ FFMPEG_BIN,'-i', 'RickRoll.mp4','-f', 'image2pipe','-pix_fmt', 'rgb24','-vcodec', 'rawvideo', '-']
-#pipe = sp.Popen(command, stdout = sp.PIPE, bufsize=10**8)
+output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'wb')
+for i in range(0,len(img_array),3):
+    uElement=img_array[i]
+    vElement=img_array[i+1]
+    yElement=img_array[i+2]
+    yElement.tofile(output_file)
+    uElement.tofile(output_file)
+    vElement.tofile(output_file)
+output_file.close()
 
-#video_info = next(s for s in probe['streams'] if s['codec_type'] == 'video')
-#fps = int(video_info['r_frame_rate'].split('/')[0])
-
-#stream = ffmpeg.input('C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4')
-#stream = ffmpeg.hflip(stream)
-#stream = ffmpeg.output(stream, 'C:\\Users\\erics\\OneDrive\\Desktop\\output.mp4')
-#ffmpeg.run(stream)
-
-#probe = ffmpeg.probe('C:\\Users\\erics\\OneDrive\\Desktop\\RickRoll.mp4')
-#video_info = next(s for s in probe['streams'] if s['codec_type'] == 'video')
-#fps = int(video_info['r_frame_rate'].split('/')[0])
-#print("fps: "+str(fps))
-#input = ffmpeg.input('RickRoll.mp4')
-#audio = input.audio.filter("aecho", 0.8, 0.9, 1000, 0.3)
-#video = input.video.hflip()
-#out = ffmpeg.output(audio, video, 'out.mp4')
+#use this format: {}_800x450_yuv420p.yuv + use y dimensions
