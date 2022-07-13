@@ -1,5 +1,4 @@
 #"C:\Users\erics\OneDrive\Desktop\videoFrames"
-import cv2
 import numpy as np
 import glob
 from array import array
@@ -14,11 +13,16 @@ for filename in glob.glob("C:\\Users\\erics\\OneDrive\\Desktop\Animation_1080P-0
     numImg+=1
 print("Number of Images:"+str(numImg))
 
-output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'wb')
+output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'w')
+#output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'wb')
+#print(output_file)
 for i in range(0,len(img_array),3):
     uElement=img_array[i]
     vElement=img_array[i+1]
     yElement=img_array[i+2]
+    #output_file.write(yElement)#doesn't work since its a numpy array
+    #output_file.write(uElement)
+    #output_file.write(vElement)
     yElement.tofile(output_file)
     uElement.tofile(output_file)
     vElement.tofile(output_file)
