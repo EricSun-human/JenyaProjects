@@ -2,12 +2,15 @@
 import numpy as np
 import glob
 from array import array
-
+import cv2
+import time
 img_array = []
 numImg=0
 for filename in glob.glob("C:\\Users\\erics\\OneDrive\\Desktop\Animation_1080P-01b3\\Animation_1080P-01b3\*.png"):
+    print("filename: "+str(filename))
     img = cv2.imread(filename)
     height, width, layers = img.shape
+    print("layers: "+str(layers))# This should be one since it should already be split into Y U V layers, but It's saying each thing has three layers
     size = (width,height)
     img_array.append(img)
     numImg+=1
@@ -16,16 +19,25 @@ print("Number of Images:"+str(numImg))
 output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'w')
 #output_file = open('C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv', 'wb')
 #print(output_file)
-for i in range(0,len(img_array),3):
-    uElement=img_array[i]
-    vElement=img_array[i+1]
-    yElement=img_array[i+2]
-    #output_file.write(yElement)#doesn't work since its a numpy array
-    #output_file.write(uElement)
-    #output_file.write(vElement)
-    yElement.tofile(output_file)
-    uElement.tofile(output_file)
-    vElement.tofile(output_file)
+
+with open("C:\\Users\\erics\\OneDrive\\Desktop\\{}_1280x720_yuv420p.yuv", 'wb') as f:
+    for i in range(0,len(img_array),3):
+        uElement=img_array[i]
+        vElement=img_array[i+1]
+        yElement=img_array[i+2]
+        #print("uElement"+str(uElement))
+        #print("vElement"+str(vElement))
+        #print("yElement"+str(yElement))
+        #output_file.write(yElement)#doesn't work since its a numpy array. Says: write() argument must be str, not numpy.ndarray
+        #output_file.write(uElement)
+        #output_file.write(vElement)
+        output_file.write(str(yElement))#doesn't work since its a numpy array. Says: write() argument must be str, not numpy.ndarray
+        output_file.write(str(uElement))
+        output_file.write(str(vElement))
+        yElement.tofile(output_file)
+        uElement.tofile(output_file)
+        vElement.tofile(output_file)
+        #time.sleep(2)
 output_file.close()
 
 #use this format: {}_800x450_yuv420p.yuv + use y dimensions
