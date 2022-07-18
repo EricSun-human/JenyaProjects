@@ -2,18 +2,19 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from matplotlib.ticker import PercentFormatter
 import numpy as np
+import argparse
 
-def main(binFilePath,wantToSee,graphName):
+def main(height,width,binFilePath,wantToSee,graphName):
     with open(binFilePath,'rb') as f:
         output_file = f.read()
-    output_file=get_data_from_annotation_array(270, 480,output_file)
+    output_file=get_data_from_annotation_array(height, width,output_file)
     numFrames = output_file.shape[2]
     #Valid input for wantToSee, which says what data histogram should plot
     if(type(wantToSee)==str and wantToSee=="all" or type(wantToSee)==int and wantToSee>0 and wantToSee<=numFrames):
         print("The program will now plot the histogram data.")
         fig = plt.figure(figsize=(8,8))
         if wantToSee=="all":
-            output_file_reshaped=np.reshape(output_file,(270*numFrames,480))
+            output_file_reshaped=np.reshape(output_file,(height*numFrames,width))
             plt.hist(output_file_reshaped)
         else:
             plt.hist(output_file[wantToSee])
@@ -39,7 +40,14 @@ binFilePath="C:\\Users\\erics\\Downloads\\jenya_4b3962e8-faba-4535-9c35-b3df955f
 #use argpars
 wantToSee="all"#either frame num or string "all"
 graphName="C:\\Users\\erics\\OneDrive\\Desktop\\graph.png"
+height=270
+width=480
+#parser = argparse.ArgumentParser()
+#parser.add_argument("binFilePath", help="display a square of a given number",type=int)
+#parser.add_argument("wantToSee", help="display a square of a given number",type=int)
+#parser.add_argument("graphName", help="display a square of a given number",type=int)
 
-main(binFilePath,wantToSee,graphName)
+#args = parser.parse_args()
+#print(args.square**2)
 
-
+main(height,width,binFilePath,wantToSee,graphName)
